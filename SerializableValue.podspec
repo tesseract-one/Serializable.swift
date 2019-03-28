@@ -16,6 +16,8 @@ Dynamic Serializable Value for Swift Codable. Allows encoding and decoding with 
 
   s.ios.deployment_target = '8.0'
 
+  s.pod_target_xcconfig = { 'APPLICATION_EXTENSION_API_ONLY' => 'YES' }
+
   s.module_name = 'Serializable'
 
   s.source_files = 'Sources/Serializable/**/*.swift'
