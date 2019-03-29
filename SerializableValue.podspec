@@ -7,12 +7,12 @@ Pod::Spec.new do |s|
 Dynamic Serializable Value for Swift Codable. Allows encoding and decoding with Dictionary types.
                        DESC
 
-  s.homepage         = 'https://github.com/tesseract.1/swift-serializable'
+  s.homepage         = 'https://github.com/tesseract-one/swift-serializable'
 
   s.license          = { :type => 'Apache 2.0', :file => 'LICENSE' }
   s.author           = { 'Tesseract Systems, Inc.' => 'info@tesseract.one' }
-  s.source           = { :git => 'https://github.com/tesseract.1/swift-serializable.git', :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/tesseract_io'
+  s.source           = { :git => 'https://github.com/tesseract-one/swift-serializable.git', :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/tesseract_one'
 
   s.ios.deployment_target = '8.0'
 
