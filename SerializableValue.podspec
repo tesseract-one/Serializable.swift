@@ -12,10 +12,12 @@ Dynamic Serializable Value for Swift Codable. Allows encoding and decoding with 
   s.license          = { :type => 'Apache 2.0', :file => 'LICENSE' }
   s.author           = { 'Tesseract Systems, Inc.' => 'info@tesseract.one' }
   s.source           = { :git => 'https://github.com/tesseract-one/swift-serializable.git', :tag => s.version.to_s }
-  s.social_media_url = 'https://twitter.com/tesseract_one'
 
   s.ios.deployment_target = '8.0'
-
+  s.osx.deployment_target = '10.9'
+  s.tvos.deployment_target = '9.0'
+  s.watchos.deployment_target = '2.0'
+  
   s.pod_target_xcconfig = { 'APPLICATION_EXTENSION_API_ONLY' => 'YES' }
 
   s.module_name = 'Serializable'
