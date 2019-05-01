@@ -12,7 +12,7 @@
 		927C5A20224D2B0D00F2AA50 /* SerializableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */; };
 		927C5A22224D2B5000F2AA50 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A21224D2B5000F2AA50 /* Protocols.swift */; };
 		927C5A24224D2B9100F2AA50 /* FoundationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */; };
-		927C5A26224D2C3000F2AA50 /* SerializableValue.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 927C5A25224D2C3000F2AA50 /* SerializableValue.podspec */; };
+		927C5A26224D2C3000F2AA50 /* Serializable.swift.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 927C5A25224D2C3000F2AA50 /* Serializable.swift.podspec */; };
 		92B577EE22772A25003E989D /* Serializable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B577E522772A24003E989D /* Serializable.framework */; };
 		92B577FC22772AC9003E989D /* SerializableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */; };
 		92B577FD22772AC9003E989D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A21224D2B5000F2AA50 /* Protocols.swift */; };
@@ -61,7 +61,7 @@
 		927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableValue.swift; sourceTree = "<group>"; };
 		927C5A21224D2B5000F2AA50 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationExtensions.swift; sourceTree = "<group>"; };
-		927C5A25224D2C3000F2AA50 /* SerializableValue.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SerializableValue.podspec; sourceTree = "<group>"; };
+		927C5A25224D2C3000F2AA50 /* Serializable.swift.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Serializable.swift.podspec; sourceTree = "<group>"; };
 		92B577E522772A24003E989D /* Serializable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Serializable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B577ED22772A25003E989D /* SerializableTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SerializableTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B5780522772B5F003E989D /* Serializable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Serializable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,7 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				92B5783022772CC2003E989D /* Package.swift */,
-				927C5A25224D2C3000F2AA50 /* SerializableValue.podspec */,
+				927C5A25224D2C3000F2AA50 /* Serializable.swift.podspec */,
 				927C5A1D224D2A9000F2AA50 /* Sources */,
 				927C5A1E224D2A9600F2AA50 /* Tests */,
 				927C5A04224D2A3400F2AA50 /* Products */,
@@ -409,7 +409,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				927C5A26224D2C3000F2AA50 /* SerializableValue.podspec in Resources */,
+				927C5A26224D2C3000F2AA50 /* Serializable.swift.podspec in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
