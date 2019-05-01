@@ -92,4 +92,4 @@ print("Message:", value.object!["message"].string!)
 
 ## License
 
-Serializable.swift is available under the Apache 2.0 license. See [the LICENSE file](./LICENSE.txt) for more information.
+Serializable.swift is available under the Apache 2.0 license. See [the LICENSE file](./LICENSE) for more information.
