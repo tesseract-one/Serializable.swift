@@ -1,17 +1,17 @@
 Pod::Spec.new do |s|
-  s.name             = 'SerializableValue'
-  s.version          = '0.0.1'
+  s.name             = 'Serializable.swift'
+  s.version          = '0.1.0'
   s.summary          = 'Dynamic Serializable Value for Swift Codable'
 
   s.description      = <<-DESC
-Dynamic Serializable Value for Swift Codable. Allows encoding and decoding with Dictionary types.
+Dynamic Serializable Value for Swift Codable. Allows encoding and decoding with Dictionary/Array types.
                        DESC
 
-  s.homepage         = 'https://github.com/tesseract-one/swift-serializable'
+  s.homepage         = 'https://github.com/tesseract-one/Serializable.swift'
 
   s.license          = { :type => 'Apache 2.0', :file => 'LICENSE' }
   s.author           = { 'Tesseract Systems, Inc.' => 'info@tesseract.one' }
-  s.source           = { :git => 'https://github.com/tesseract-one/swift-serializable.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/tesseract-one/Serializable.swift.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.9'
