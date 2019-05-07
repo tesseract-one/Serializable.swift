@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum SerializableValue: Codable, SerializableProtocol, Equatable {
+public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashable {
     case `nil`
     case bool(Bool)
     case int(Int)
