@@ -29,11 +29,11 @@ public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashabl
     case array(Array<SerializableValue>)
     case object(Dictionary<String, SerializableValue>)
     
-    public init(_ serializable: SerializableValue) {
+    public init(serializable: SerializableValue) {
         self = serializable
     }
     
-    public init(from value: SerializableValueEncodable) {
+    public init(encodable value: SerializableValueEncodable) {
         self = value.serializable
     }
     

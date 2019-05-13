@@ -30,7 +30,7 @@ private let DATE_FORMATTER: DateFormatter = {
 }()
 
 extension Int: SerializableProtocol {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         guard case .int(let int) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = int
     }
@@ -56,7 +56,7 @@ extension SerializableValue {
 }
 
 extension Double: SerializableProtocol {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         guard case .float(let num) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = num
     }
@@ -82,7 +82,7 @@ extension SerializableValue {
 }
 
 extension Bool: SerializableProtocol {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         guard case .bool(let bool) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = bool
     }
@@ -105,7 +105,7 @@ extension SerializableValue {
 }
 
 extension Date: SerializableProtocol {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         switch serializable {
         case .string(let str):
             guard let date = DATE_FORMATTER.date(from: str) else {
@@ -125,12 +125,12 @@ extension Date: SerializableProtocol {
 
 extension SerializableValue {
     public var date: Date? {
-        return try? Date(self)
+        return try? Date(serializable: self)
     }
 }
 
 extension Data: SerializableProtocol {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         switch serializable {
         case .string(let str):
             guard let data = Data(base64Encoded: str) else {
@@ -146,12 +146,12 @@ extension Data: SerializableProtocol {
 
 extension SerializableValue {
     public var data: Data? {
-        return try? Data(self)
+        return try? Data(serializable: self)
     }
 }
 
 extension String: SerializableProtocol {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         guard case .string(let str) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = str
     }
@@ -178,9 +178,9 @@ extension Array: SerializableValueEncodable where Element: SerializableValueEnco
 }
 
 extension Array: SerializableValueDecodable where Element: SerializableValueDecodable {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         guard case .array(let array) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
-        self = try array.map{ try Element($0) }
+        self = try array.map{ try Element(serializable: $0) }
     }
 }
 
@@ -200,9 +200,9 @@ extension SerializableValue {
 }
 
 extension Dictionary: SerializableValueDecodable where Key == String, Value: SerializableValueDecodable {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         guard case .object(let obj) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
-        self = try obj.mapValues { try Value($0) }
+        self = try obj.mapValues { try Value(serializable: $0) }
     }
 }
 
@@ -237,10 +237,10 @@ extension Optional: SerializableValueEncodable where Wrapped: SerializableValueE
     }
 }
 extension Optional: SerializableValueDecodable where Wrapped: SerializableValueDecodable {
-    public init(_ serializable: SerializableValue) throws {
+    public init(serializable: SerializableValue) throws {
         switch serializable {
         case .nil: self = .none
-        default: self = try .some(Wrapped(serializable))
+        default: self = try .some(Wrapped(serializable: serializable))
         }
     }
 }

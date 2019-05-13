@@ -25,7 +25,7 @@ public protocol SerializableValueEncodable {
 }
 
 public protocol SerializableValueDecodable {
-    init(_ serializable: SerializableValue) throws
+    init(serializable: SerializableValue) throws
 }
 
 public typealias SerializableProtocol = SerializableValueDecodable & SerializableValueEncodable
