@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Serializable.swift'
-  s.version          = '0.1.3'
+  s.version          = '0.1.4'
   s.summary          = 'Dynamic Serializable Value for Swift Codable'
 
   s.description      = <<-DESC
