@@ -37,6 +37,10 @@ public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashabl
         self = value.serializable
     }
     
+    public init(_ array: Array<SerializableValueEncodable>) {
+        self = .array(array.map { $0.serializable })
+    }
+    
     public init(_ dict: Dictionary<String, SerializableValueEncodable>) {
         self = .object(dict.mapValues{ $0.serializable })
     }
