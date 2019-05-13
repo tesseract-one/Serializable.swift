@@ -36,13 +36,12 @@ extension Int: SerializableProtocol {
     }
     public var serializable: SerializableValue { return .int(self) }
 }
-extension SerializableValueDecodable {
+
+extension SerializableValue {
     public var int: Int? {
         switch self {
-        case let val as SerializableValue:
-            guard case .int(let int) = val else { return nil }
-            return int
-        case let int as Int: return int
+        case .int(let int): return int
+        case .float(let float): return Int(float)
         default: return nil
         }
     }
@@ -55,13 +54,11 @@ extension Double: SerializableProtocol {
     }
     public var serializable: SerializableValue { return .float(self) }
 }
-extension SerializableValueDecodable {
+extension SerializableValue {
     public var float: Double? {
         switch self {
-        case let val as SerializableValue:
-            guard case .float(let num) = val else { return nil }
-            return num
-        case let num as Double: return num
+        case .int(let int): return Double(int)
+        case .float(let float): return float
         default: return nil
         }
     }
@@ -74,15 +71,10 @@ extension Bool: SerializableProtocol {
     }
     public var serializable: SerializableValue { return .bool(self) }
 }
-extension SerializableValueDecodable {
+extension SerializableValue {
     public var bool: Bool? {
-        switch self {
-        case let val as SerializableValue:
-            guard case .bool(let bool) = val else { return nil }
-            return bool
-        case let bool as Bool: return bool
-        default: return nil
-        }
+        guard case .bool(let bool) = self else { return nil }
+        return bool
     }
 }
 
@@ -104,20 +96,9 @@ extension Date: SerializableProtocol {
     }
     public var serializable: SerializableValue { return .string(DATE_FORMATTER.string(from: self)) }
 }
-extension SerializableValueDecodable {
+extension SerializableValue {
     public var date: Date? {
-        switch self {
-        case let val as SerializableValue:
-            return try? Date(val)
-        case let str as String:
-            return DATE_FORMATTER.date(from: str)
-        case let num as Double:
-            return Date(timeIntervalSince1970: num)
-        case let int as Int:
-            return Date(timeIntervalSince1970: Double(int))
-        case let date as Date: return date
-        default: return nil
-        }
+        return try? Date(self)
     }
 }
 
@@ -135,16 +116,10 @@ extension Data: SerializableProtocol {
     }
     public var serializable: SerializableValue { return .string(self.base64EncodedString()) }
 }
-extension SerializableValueDecodable {
+
+extension SerializableValue {
     public var data: Data? {
-        switch self {
-        case let val as SerializableValue:
-            return try? Data(val)
-        case let str as String:
-            return Data(base64Encoded: str)
-        case let data as Data: return data
-        default: return nil
-        }
+        return try? Data(self)
     }
 }
 
@@ -155,37 +130,29 @@ extension String: SerializableProtocol {
     }
     public var serializable: SerializableValue { return .string(self) }
 }
-extension SerializableValueDecodable {
+
+extension SerializableValue {
     public var string: String? {
-        switch self {
-        case let val as SerializableValue:
-            guard case .string(let str) = val else { return nil }
-            return str
-        case let str as String: return str
-        default: return nil
-        }
+        guard case .string(let str) = self else { return nil }
+        return str
     }
 }
 
 extension Array: SerializableValueEncodable where Element: SerializableValueEncodable {
     public var serializable: SerializableValue { return .array(self.map{$0.serializable}) }
 }
+
 extension Array: SerializableValueDecodable where Element: SerializableValueDecodable {
     public init(_ serializable: SerializableValue) throws {
         guard case .array(let array) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = try array.map{ try Element($0) }
     }
 }
-extension SerializableValueDecodable {
+
+extension SerializableValue {
     public var array: Array<SerializableValue>? {
-        switch self {
-        case let val as SerializableValue:
-            guard case .array(let array) = val else { return nil }
-            return array
-        case let array as Array<SerializableValue>: return array
-        case let array as Array<SerializableProtocol>: return array.map{$0.serializable}
-        default: return nil
-        }
+        guard case .array(let array) = self else { return nil }
+        return array
     }
 }
 
@@ -202,16 +169,10 @@ extension Dictionary: SerializableValueEncodable where Key == String, Value: Ser
     }
 }
 
-extension SerializableValueDecodable {
+extension SerializableValue {
     public var object: Dictionary<String, SerializableValue>? {
-        switch self {
-        case let val as SerializableValue:
-            guard case .object(let obj) = val else { return nil }
-            return obj
-        case let object as Dictionary<String, SerializableValue>: return object
-        case let dict as Dictionary<String, SerializableProtocol>: return dict.mapValues { $0.serializable }
-        default: return nil
-        }
+        guard case .object(let obj) = self else { return nil }
+        return obj
     }
 }
 
@@ -235,5 +196,11 @@ extension Optional: SerializableValueDecodable where Wrapped: SerializableValueD
 extension Optional {
     public static var `nil`: SerializableProtocol {
         return SerializableValue.nil
+    }
+}
+
+extension SerializableValue {
+    public var isNil: Bool {
+        return self == .nil
     }
 }
