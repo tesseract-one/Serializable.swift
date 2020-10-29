@@ -37,7 +37,7 @@ This library allows encoding and decoding of dynamic data structures via Swift C
 Add the following dependency to your [Package.swift](https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md#define-dependencies):
 
 ```swift
-.package(url: "https://github.com/tesseract-one/Serializable.swift.git", from: "0.1.0")
+.package(url: "https://github.com/tesseract-one/Serializable.swift.git", from: "0.2.0")
 ```
 
 Run `swift build` and build your app.

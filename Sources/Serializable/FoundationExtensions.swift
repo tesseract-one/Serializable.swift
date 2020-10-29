@@ -20,17 +20,6 @@
 
 import Foundation
 
-extension Formatter {
-    public static let serializableIso8601millis: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .iso8601)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-        return formatter
-    }()
-}
-
 extension Int64: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
         guard case .int(let int) = serializable else {
@@ -61,7 +50,9 @@ extension SerializableValue {
 
 extension Double: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
-        guard case .float(let num) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
+        guard case .float(let num) = serializable else {
+            throw SerializableValue.Error.notInitializable(serializable)
+        }
         self = num
     }
     public var serializable: SerializableValue { .float(self) }
@@ -87,7 +78,9 @@ extension SerializableValue {
 
 extension Bool: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
-        guard case .bool(let bool) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
+        guard case .bool(let bool) = serializable else {
+            throw SerializableValue.Error.notInitializable(serializable)
+        }
         self = bool
     }
     public var serializable: SerializableValue { .bool(self) }
@@ -110,21 +103,20 @@ extension SerializableValue {
 
 extension Date: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
-        switch serializable {
-        case .date(let date): self = date
-        case .int(let int): self = Date(timeIntervalSince1970: TimeInterval(int))
-        case .float(let num): self = Date(timeIntervalSince1970: TimeInterval(num))
-        default:
+        guard case .date(let date) = serializable else {
             throw SerializableValue.Error.notInitializable(serializable)
         }
+        self = date
     }
     
     public var serializable: SerializableValue { .date(self) }
 }
 
 extension SerializableValue {
-    public var date: Date? {
-        return try? Date(serializable: self)
+    public var date: Date? { date() }
+    
+    public func date(_ decoder: DateDecodingStrategy = .deferredToParser) -> Date? {
+        try? decoder.decode(self)
     }
 }
 
@@ -135,13 +127,15 @@ extension Data: SerializableValueCodable {
         }
         self = data
     }
+    
     public var serializable: SerializableValue { .bytes(self) }
 }
 
 extension SerializableValue {
     public var bytes: Data? { bytes() }
+    
     public func bytes(_ decoder: DataDecodingStrategy = .base64) -> Data? {
-        return try? decoder.decode(self)
+        try? decoder.decode(self)
     }
 }
 
@@ -150,6 +144,7 @@ extension String: SerializableValueCodable {
         guard case .string(let str) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = str
     }
+    
     public var serializable: SerializableValue { .string(self) }
 }
 

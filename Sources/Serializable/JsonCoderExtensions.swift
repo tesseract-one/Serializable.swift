@@ -1,5 +1,5 @@
 //
-//  JsonExtensions.swift
+//  JsonCoderExtensions.swift
 //  Serializable
 //
 //  Created by Yehor Popovych on 10/29/20.
@@ -20,7 +20,7 @@
 
 import Foundation
 
-extension DateFormatter {
+extension Formatter {
     public static let iso8601millis: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -32,24 +32,11 @@ extension DateFormatter {
 }
 
 extension JSONDecoder.DateDecodingStrategy {
-    public static let iso8601millis = custom {
-        let container = try $0.singleValueContainer()
-        let string = try container.decode(String.self)
-        guard let date = DateFormatter.iso8601millis.date(from: string) else {
-            throw DecodingError.dataCorruptedError(
-                in: container,
-                debugDescription: "Invalid date: " + string
-            )
-        }
-        return date
-    }
+    public static let iso8601millis = formatted(.iso8601millis)
 }
 
 extension JSONEncoder.DateEncodingStrategy {
-    public static let iso8601millis = custom {
-        var container = $1.singleValueContainer()
-        try container.encode(DateFormatter.iso8601millis.string(from: $0))
-    }
+    public static let iso8601millis = formatted(.iso8601millis)
 }
 
 extension JSONEncoder.DataEncodingStrategy {

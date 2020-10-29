@@ -1,5 +1,5 @@
 //
-//  Bytes.swift
+//  DataDecodingStrategy.swift
 //  Serializable
 //
 //  Created by Yehor Popovych on 10/29/20.

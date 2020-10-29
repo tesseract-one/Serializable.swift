@@ -97,6 +97,14 @@ public enum SerializableValue: Codable, Equatable, Hashable {
             self.decode = decode
         }
     }
+    
+    public struct DateDecodingStrategy {
+        public let decode: (SerializableValueEncodable) throws -> Date
+        
+        public init(decode: @escaping (SerializableValueEncodable) throws -> Date) {
+            self.decode = decode
+        }
+    }
 }
 
 extension SerializableValue: SerializableValueCodable {
