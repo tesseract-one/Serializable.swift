@@ -3,7 +3,7 @@
 //  Serializable
 //
 //  Created by Yehor Popovych on 3/28/19.
-//  Copyright © 2019 Tesseract Systems, Inc. All rights reserved.
+//  Copyright © 2020 Tesseract Systems, Inc. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,25 +20,29 @@
 
 import Foundation
 
-private let DATE_FORMATTER: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.calendar = Calendar(identifier: .iso8601)
-    formatter.locale = Locale(identifier: "en_US_POSIX")
-    formatter.timeZone = TimeZone(secondsFromGMT: 0)
-    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
-    return formatter
-}()
+extension Formatter {
+    public static let serializableIso8601millis: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+        return formatter
+    }()
+}
 
-extension Int: SerializableProtocol {
+extension Int64: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
-        guard case .int(let int) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
+        guard case .int(let int) = serializable else {
+            throw SerializableValue.Error.notInitializable(serializable)
+        }
         self = int
     }
-    public var serializable: SerializableValue { return .int(self) }
+    public var serializable: SerializableValue { .int(self) }
 }
 
 extension SerializableValue: ExpressibleByIntegerLiteral {
-    public typealias IntegerLiteralType = Int
+    public typealias IntegerLiteralType = Int64
 
     public init(integerLiteral value: IntegerLiteralType) {
         self = .int(value)
@@ -46,21 +50,21 @@ extension SerializableValue: ExpressibleByIntegerLiteral {
 }
 
 extension SerializableValue {
-    public var int: Int? {
+    public var int: Int64? {
         switch self {
         case .int(let int): return int
-        case .float(let float): return Int(float)
+        case .float(let float): return Int64(float)
         default: return nil
         }
     }
 }
 
-extension Double: SerializableProtocol {
+extension Double: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
         guard case .float(let num) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = num
     }
-    public var serializable: SerializableValue { return .float(self) }
+    public var serializable: SerializableValue { .float(self) }
 }
 
 extension SerializableValue: ExpressibleByFloatLiteral {
@@ -81,12 +85,12 @@ extension SerializableValue {
     }
 }
 
-extension Bool: SerializableProtocol {
+extension Bool: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
         guard case .bool(let bool) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = bool
     }
-    public var serializable: SerializableValue { return .bool(self) }
+    public var serializable: SerializableValue { .bool(self) }
 }
 
 extension SerializableValue: ExpressibleByBooleanLiteral {
@@ -104,23 +108,18 @@ extension SerializableValue {
     }
 }
 
-extension Date: SerializableProtocol {
+extension Date: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
         switch serializable {
-        case .string(let str):
-            guard let date = DATE_FORMATTER.date(from: str) else {
-                throw SerializableValue.Error.notInitializable(serializable)
-            }
-            self = date
-        case .float(let num):
-            self = Date(timeIntervalSince1970: num)
-        case .int(let int):
-            self = Date(timeIntervalSince1970: Double(int))
+        case .date(let date): self = date
+        case .int(let int): self = Date(timeIntervalSince1970: TimeInterval(int))
+        case .float(let num): self = Date(timeIntervalSince1970: TimeInterval(num))
         default:
             throw SerializableValue.Error.notInitializable(serializable)
         }
     }
-    public var serializable: SerializableValue { return .string(DATE_FORMATTER.string(from: self)) }
+    
+    public var serializable: SerializableValue { .date(self) }
 }
 
 extension SerializableValue {
@@ -129,33 +128,29 @@ extension SerializableValue {
     }
 }
 
-extension Data: SerializableProtocol {
+extension Data: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
-        switch serializable {
-        case .string(let str):
-            guard let data = Data(base64Encoded: str) else {
-                throw SerializableValue.Error.notInitializable(serializable)
-            }
-            self = data
-        default:
+        guard case .bytes(let data) = serializable else {
             throw SerializableValue.Error.notInitializable(serializable)
         }
+        self = data
     }
-    public var serializable: SerializableValue { return .string(self.base64EncodedString()) }
+    public var serializable: SerializableValue { .bytes(self) }
 }
 
 extension SerializableValue {
-    public var data: Data? {
-        return try? Data(serializable: self)
+    public var bytes: Data? { bytes() }
+    public func bytes(_ decoder: DataDecodingStrategy = .base64) -> Data? {
+        return try? decoder.decode(self)
     }
 }
 
-extension String: SerializableProtocol {
+extension String: SerializableValueCodable {
     public init(serializable: SerializableValue) throws {
         guard case .string(let str) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
         self = str
     }
-    public var serializable: SerializableValue { return .string(self) }
+    public var serializable: SerializableValue { .string(self) }
 }
 
 extension SerializableValue: ExpressibleByStringLiteral {
@@ -174,12 +169,16 @@ extension SerializableValue {
 }
 
 extension Array: SerializableValueEncodable where Element: SerializableValueEncodable {
-    public var serializable: SerializableValue { return .array(self.map{$0.serializable}) }
+    public var serializable: SerializableValue {
+        .array(self.map{$0.serializable})
+    }
 }
 
 extension Array: SerializableValueDecodable where Element: SerializableValueDecodable {
     public init(serializable: SerializableValue) throws {
-        guard case .array(let array) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
+        guard case .array(let array) = serializable else {
+            throw SerializableValue.Error.notInitializable(serializable)
+        }
         self = try array.map{ try Element(serializable: $0) }
     }
 }
@@ -201,14 +200,16 @@ extension SerializableValue {
 
 extension Dictionary: SerializableValueDecodable where Key == String, Value: SerializableValueDecodable {
     public init(serializable: SerializableValue) throws {
-        guard case .object(let obj) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
+        guard case .object(let obj) = serializable else {
+            throw SerializableValue.Error.notInitializable(serializable)
+        }
         self = try obj.mapValues { try Value(serializable: $0) }
     }
 }
 
 extension Dictionary: SerializableValueEncodable where Key == String, Value: SerializableValueEncodable {
     public var serializable: SerializableValue {
-        return .object(self.mapValues { $0.serializable })
+        .object(self.mapValues{$0.serializable})
     }
 }
 
@@ -246,9 +247,7 @@ extension Optional: SerializableValueDecodable where Wrapped: SerializableValueD
 }
 
 extension Optional {
-    public static var `nil`: SerializableProtocol {
-        return SerializableValue.nil
-    }
+    public static var `nil`: SerializableValueCodable { SerializableValue.nil }
 }
 
 extension SerializableValue: ExpressibleByNilLiteral {
@@ -258,7 +257,5 @@ extension SerializableValue: ExpressibleByNilLiteral {
 }
 
 extension SerializableValue {
-    public var isNil: Bool {
-        return self == .nil
-    }
+    public var isNil: Bool { self == .nil }
 }

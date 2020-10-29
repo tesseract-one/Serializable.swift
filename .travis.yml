@@ -10,7 +10,7 @@ env:
 matrix:
   include:
     - os: osx
-      osx_image: xcode10.2
+      osx_image: xcode11.7
       language: objective-c
       sudo: required
       before_install:
@@ -31,10 +31,12 @@ matrix:
         # Kill background echo job
         - kill %1
     - os: linux
-      # Ubuntu 16.04
-      dist: xenial
+      # Ubuntu 20.04
+      dist: focal
       # Generic language as travis doesn't know anything about SPM and Linux
       language: generic
+      env:
+        - SWIFT_VERSION=5.3
       before_install:
         - eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
       script:

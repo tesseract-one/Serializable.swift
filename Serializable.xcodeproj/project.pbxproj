@@ -7,21 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		926064D0254B117500564F92 /* JsonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064CF254B117500564F92 /* JsonExtensions.swift */; };
+		926064D1254B117500564F92 /* JsonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064CF254B117500564F92 /* JsonExtensions.swift */; };
+		926064D2254B117500564F92 /* JsonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064CF254B117500564F92 /* JsonExtensions.swift */; };
+		926064D3254B117500564F92 /* JsonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064CF254B117500564F92 /* JsonExtensions.swift */; };
+		926064D5254B290600564F92 /* CustomEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064D4254B290600564F92 /* CustomEncoderTests.swift */; };
+		926064D6254B290600564F92 /* CustomEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064D4254B290600564F92 /* CustomEncoderTests.swift */; };
+		926064D7254B290600564F92 /* CustomEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064D4254B290600564F92 /* CustomEncoderTests.swift */; };
+		926064D9254B5A0B00564F92 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064D8254B5A0B00564F92 /* Bytes.swift */; };
+		926064DA254B5A0B00564F92 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064D8254B5A0B00564F92 /* Bytes.swift */; };
+		926064DB254B5A0B00564F92 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064D8254B5A0B00564F92 /* Bytes.swift */; };
+		926064DC254B5A0B00564F92 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064D8254B5A0B00564F92 /* Bytes.swift */; };
+		926064E2254B658100564F92 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064E1254B658100564F92 /* XCTestManifests.swift */; };
+		926064E3254B658100564F92 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064E1254B658100564F92 /* XCTestManifests.swift */; };
+		926064E4254B658100564F92 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926064E1254B658100564F92 /* XCTestManifests.swift */; };
 		927C5A0D224D2A3400F2AA50 /* Serializable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 927C5A03224D2A3400F2AA50 /* Serializable.framework */; };
 		927C5A12224D2A3400F2AA50 /* SerializableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A11224D2A3400F2AA50 /* SerializableTests.swift */; };
-		927C5A20224D2B0D00F2AA50 /* SerializableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */; };
+		927C5A20224D2B0D00F2AA50 /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* Value.swift */; };
 		927C5A22224D2B5000F2AA50 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A21224D2B5000F2AA50 /* Protocols.swift */; };
 		927C5A24224D2B9100F2AA50 /* FoundationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */; };
 		92B577EE22772A25003E989D /* Serializable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B577E522772A24003E989D /* Serializable.framework */; };
-		92B577FC22772AC9003E989D /* SerializableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */; };
+		92B577FC22772AC9003E989D /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* Value.swift */; };
 		92B577FD22772AC9003E989D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A21224D2B5000F2AA50 /* Protocols.swift */; };
 		92B577FE22772AC9003E989D /* FoundationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */; };
 		92B577FF22772AD0003E989D /* SerializableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A11224D2A3400F2AA50 /* SerializableTests.swift */; };
 		92B5780E22772B60003E989D /* Serializable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B5780522772B5F003E989D /* Serializable.framework */; };
-		92B5782922772C5A003E989D /* SerializableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */; };
+		92B5782922772C5A003E989D /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* Value.swift */; };
 		92B5782A22772C5A003E989D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A21224D2B5000F2AA50 /* Protocols.swift */; };
 		92B5782B22772C5A003E989D /* FoundationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */; };
-		92B5782C22772C5A003E989D /* SerializableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */; };
+		92B5782C22772C5A003E989D /* Value.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A1F224D2B0D00F2AA50 /* Value.swift */; };
 		92B5782D22772C5A003E989D /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A21224D2B5000F2AA50 /* Protocols.swift */; };
 		92B5782E22772C5A003E989D /* FoundationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */; };
 		92B5782F22772C60003E989D /* SerializableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C5A11224D2A3400F2AA50 /* SerializableTests.swift */; };
@@ -52,12 +66,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		926064CF254B117500564F92 /* JsonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonExtensions.swift; sourceTree = "<group>"; };
+		926064D4254B290600564F92 /* CustomEncoderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEncoderTests.swift; sourceTree = "<group>"; };
+		926064D8254B5A0B00564F92 /* Bytes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bytes.swift; sourceTree = "<group>"; };
+		926064E1254B658100564F92 /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		927C5A03224D2A3400F2AA50 /* Serializable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Serializable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		927C5A07224D2A3400F2AA50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		927C5A0C224D2A3400F2AA50 /* SerializableTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SerializableTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		927C5A11224D2A3400F2AA50 /* SerializableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableTests.swift; sourceTree = "<group>"; };
 		927C5A13224D2A3400F2AA50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializableValue.swift; sourceTree = "<group>"; };
+		927C5A1F224D2B0D00F2AA50 /* Value.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Value.swift; sourceTree = "<group>"; };
 		927C5A21224D2B5000F2AA50 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundationExtensions.swift; sourceTree = "<group>"; };
 		927C5A25224D2C3000F2AA50 /* Serializable.swift.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Serializable.swift.podspec; sourceTree = "<group>"; };
@@ -154,9 +172,11 @@
 			isa = PBXGroup;
 			children = (
 				927C5A07224D2A3400F2AA50 /* Info.plist */,
-				927C5A1F224D2B0D00F2AA50 /* SerializableValue.swift */,
+				927C5A1F224D2B0D00F2AA50 /* Value.swift */,
 				927C5A21224D2B5000F2AA50 /* Protocols.swift */,
 				927C5A23224D2B9100F2AA50 /* FoundationExtensions.swift */,
+				926064CF254B117500564F92 /* JsonExtensions.swift */,
+				926064D8254B5A0B00564F92 /* Bytes.swift */,
 			);
 			path = Serializable;
 			sourceTree = "<group>";
@@ -164,8 +184,10 @@
 		927C5A10224D2A3400F2AA50 /* SerializableTests */ = {
 			isa = PBXGroup;
 			children = (
-				927C5A11224D2A3400F2AA50 /* SerializableTests.swift */,
 				927C5A13224D2A3400F2AA50 /* Info.plist */,
+				926064D4254B290600564F92 /* CustomEncoderTests.swift */,
+				927C5A11224D2A3400F2AA50 /* SerializableTests.swift */,
+				926064E1254B658100564F92 /* XCTestManifests.swift */,
 			);
 			path = SerializableTests;
 			sourceTree = "<group>";
@@ -386,6 +408,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 927C59F9224D2A3400F2AA50;
 			productRefGroup = 927C5A04224D2A3400F2AA50 /* Products */;
@@ -460,7 +483,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				927C5A20224D2B0D00F2AA50 /* SerializableValue.swift in Sources */,
+				927C5A20224D2B0D00F2AA50 /* Value.swift in Sources */,
+				926064D0254B117500564F92 /* JsonExtensions.swift in Sources */,
+				926064D9254B5A0B00564F92 /* Bytes.swift in Sources */,
 				927C5A22224D2B5000F2AA50 /* Protocols.swift in Sources */,
 				927C5A24224D2B9100F2AA50 /* FoundationExtensions.swift in Sources */,
 			);
@@ -470,7 +495,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				926064E2254B658100564F92 /* XCTestManifests.swift in Sources */,
 				927C5A12224D2A3400F2AA50 /* SerializableTests.swift in Sources */,
+				926064D5254B290600564F92 /* CustomEncoderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,7 +505,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92B577FC22772AC9003E989D /* SerializableValue.swift in Sources */,
+				92B577FC22772AC9003E989D /* Value.swift in Sources */,
+				926064D1254B117500564F92 /* JsonExtensions.swift in Sources */,
+				926064DA254B5A0B00564F92 /* Bytes.swift in Sources */,
 				92B577FD22772AC9003E989D /* Protocols.swift in Sources */,
 				92B577FE22772AC9003E989D /* FoundationExtensions.swift in Sources */,
 			);
@@ -488,7 +517,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				926064E3254B658100564F92 /* XCTestManifests.swift in Sources */,
 				92B577FF22772AD0003E989D /* SerializableTests.swift in Sources */,
+				926064D6254B290600564F92 /* CustomEncoderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,7 +527,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92B5782922772C5A003E989D /* SerializableValue.swift in Sources */,
+				92B5782922772C5A003E989D /* Value.swift in Sources */,
+				926064D2254B117500564F92 /* JsonExtensions.swift in Sources */,
+				926064DB254B5A0B00564F92 /* Bytes.swift in Sources */,
 				92B5782A22772C5A003E989D /* Protocols.swift in Sources */,
 				92B5782B22772C5A003E989D /* FoundationExtensions.swift in Sources */,
 			);
@@ -506,7 +539,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				926064E4254B658100564F92 /* XCTestManifests.swift in Sources */,
 				92B5782F22772C60003E989D /* SerializableTests.swift in Sources */,
+				926064D7254B290600564F92 /* CustomEncoderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +549,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92B5782C22772C5A003E989D /* SerializableValue.swift in Sources */,
+				92B5782C22772C5A003E989D /* Value.swift in Sources */,
+				926064D3254B117500564F92 /* JsonExtensions.swift in Sources */,
+				926064DC254B5A0B00564F92 /* Bytes.swift in Sources */,
 				92B5782D22772C5A003E989D /* Protocols.swift in Sources */,
 				92B5782E22772C5A003E989D /* FoundationExtensions.swift in Sources */,
 			);
@@ -594,8 +631,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -657,8 +694,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -690,6 +727,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
@@ -715,6 +753,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
@@ -776,6 +815,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
@@ -801,6 +841,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
@@ -864,6 +905,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = appletvos;
@@ -888,6 +930,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = appletvos;
@@ -951,6 +994,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = watchos;
@@ -976,6 +1020,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = watchos;

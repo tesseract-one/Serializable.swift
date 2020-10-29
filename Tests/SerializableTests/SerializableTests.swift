@@ -3,7 +3,7 @@
 //  SerializableTests
 //
 //  Created by Yehor Popovych on 3/28/19.
-//  Copyright © 2019 Tesseract Systems, Inc. All rights reserved.
+//  Copyright © 2020 Tesseract Systems, Inc. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -22,25 +22,52 @@ import XCTest
 @testable import Serializable
 
 class SerializableTests: XCTestCase {
-
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func parseAndCheck(data: Data) {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601millis
+        let value = try? decoder.decode(SerializableValue.self, from: data)
+        let obj = value?.object
+        XCTAssertEqual(obj?["int"]?.int, -123)
+        XCTAssertEqual(obj?["array"]?.array, [.int(1), .int(2), .int(3)])
+        XCTAssertEqual(obj?["array"]?.array?[2], 3)
+        XCTAssertEqual(obj?["float"]?.float, 123.456)
+        XCTAssertEqual(obj?["date"]?.date, Date(timeIntervalSince1970: 1569477510.996))
+        XCTAssertEqual(obj?["bytes"]?.bytes, "test".data(using: .utf8))
+        XCTAssertEqual(obj?["string"]?.string, "test")
+        XCTAssertEqual(obj?["bool"]?.bool, false)
+        XCTAssertEqual(obj?["optional"]?.isNil, true)
+        XCTAssertEqual(obj?["object"]?.object?["a"]?.string, "b")
     }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testDecoding() {
+        let json = """
+        { "array": [1, 2, 3], "int": -123, "float": 123.456,
+          "date": "2019-09-26T07:58:30.996+0200", "bytes": "dGVzdA==",
+          "string": "test", "bool": false, "optional": null,
+          "object": {"a": "b"}
+        }
+        """
+        parseAndCheck(data: json.data(using: .utf8)!)
     }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    func testEncoding() {
+        var object = Dictionary<String, SerializableValueEncodable>()
+        object["int"] = Int64(-123)
+        object["array"] = [Int64(1), Int64(2), Int64(3)]
+        object["float"] = 123.456
+        object["date"] = Date(timeIntervalSince1970: 1569477510.996)
+        object["bytes"] = "test".data(using: .utf8)
+        object["string"] = "test"
+        object["bool"] = false
+        object["optional"] = .nil
+        object["object"] = ["a": "b"]
+        let encoder = JSONEncoder()
+        encoder.dataEncodingStrategy = .base64
+        encoder.dateEncodingStrategy = .iso8601millis
+        let data = try? encoder.encode(SerializableValue(object))
+        XCTAssertNotNil(data)
+        if let data = data {
+            parseAndCheck(data: data)
         }
     }
-
 }

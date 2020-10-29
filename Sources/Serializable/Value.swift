@@ -1,9 +1,9 @@
 //
-//  SerializableValue.swift
+//  Value.swift
 //  Serializable
 //
 //  Created by Yehor Popovych on 3/28/19.
-//  Copyright © 2019 Tesseract Systems, Inc. All rights reserved.
+//  Copyright © 2020 Tesseract Systems, Inc. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -20,33 +20,27 @@
 
 import Foundation
 
-public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashable {
+public enum SerializableValue: Codable, Equatable, Hashable {
     case `nil`
     case bool(Bool)
-    case int(Int)
+    case int(Int64)
     case float(Double)
     case string(String)
+    case date(Date)
+    case bytes(Data)
     case array(Array<SerializableValue>)
     case object(Dictionary<String, SerializableValue>)
     
-    public init(serializable: SerializableValue) {
-        self = serializable
-    }
-    
-    public init(encodable value: SerializableValueEncodable) {
+    public init(_ value: SerializableValueEncodable) {
         self = value.serializable
     }
-    
+
     public init(_ array: Array<SerializableValueEncodable>) {
         self = .array(array.map { $0.serializable })
     }
-    
+
     public init(_ dict: Dictionary<String, SerializableValueEncodable>) {
         self = .object(dict.mapValues{ $0.serializable })
-    }
-    
-    public var serializable: SerializableValue {
-        return self
     }
     
     public init(from decoder: Decoder) throws {
@@ -56,10 +50,12 @@ public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashabl
             self = .nil
         } else if let bool = try? container.decode(Bool.self) {
             self = .bool(bool)
-        } else if let int = try? container.decode(Int.self) {
+        } else if let int = try? container.decode(Int64.self) {
             self = .int(int)
         } else if let float = try? container.decode(Double.self) {
             self = .float(float)
+        } else if let date = try? container.decode(Date.self) {
+            self = .date(date)
         } else if let string = try? container.decode(String.self) {
             self = .string(string)
         } else if let array = try? container.decode([SerializableValue].self) {
@@ -67,7 +63,10 @@ public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashabl
         } else if let object = try? container.decode([String: SerializableValue].self) {
             self = .object(object)
         } else {
-            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unknown value type")
+            throw DecodingError.dataCorruptedError(
+                in: container,
+                debugDescription: "Unknown value type"
+            )
         }
     }
     
@@ -79,6 +78,8 @@ public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashabl
         case .bool(let bool): try container.encode(bool)
         case .int(let int): try container.encode(int)
         case .float(let num): try container.encode(num)
+        case .date(let date): try container.encode(date)
+        case .bytes(let data): try container.encode(data)
         case .string(let str): try container.encode(str)
         case .array(let arr): try container.encode(arr)
         case .object(let obj): try container.encode(obj)
@@ -88,15 +89,39 @@ public enum SerializableValue: Codable, SerializableProtocol, Equatable, Hashabl
     public enum Error: Swift.Error {
         case notInitializable(SerializableValue)
     }
+    
+    public struct DataDecodingStrategy {
+        public let decode: (SerializableValueEncodable) throws -> Data
+        
+        public init(decode: @escaping (SerializableValueEncodable) throws -> Data) {
+            self.decode = decode
+        }
+    }
 }
 
-private struct CustomCodingKeys: CodingKey {
-    let stringValue: String
-    
-    init?(stringValue: String) {
-        self.stringValue = stringValue
+extension SerializableValue: SerializableValueCodable {
+    public init(serializable: SerializableValue) throws {
+        self = serializable
     }
     
-    var intValue: Int? { return nil }
-    init?(intValue: Int) { return nil }
+    public var serializable: SerializableValue { self }
+}
+
+extension SerializableValue: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case .nil: return "null"
+        case .int(let int): return "\(int)"
+        case .float(let num): return "\(num)"
+        case .bool(let bool): return bool ? "true" : "false"
+        case .date(let date): return "\"\(DateFormatter.iso8601millis.string(from: date))\""
+        case .string(let str): return "\"\(str)\""
+        case .bytes(let data):
+            return "\"\(JSONEncoder.DataEncodingStrategy.srv_encodeHex(data: data, prefix: false))\""
+        case .array(let arr):
+            return "[\(arr.map{String(describing: $0)}.joined(separator: ", "))]"
+        case .object(let obj):
+            return "{\(obj.map{"\"\($0)\": \(String(describing: $1))"}.joined(separator: ", "))}"
+        }
+    }
 }

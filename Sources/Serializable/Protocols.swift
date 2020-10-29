@@ -3,7 +3,7 @@
 //  Serializable
 //
 //  Created by Yehor Popovych on 3/28/19.
-//  Copyright © 2019 Tesseract Systems, Inc. All rights reserved.
+//  Copyright © 2020 Tesseract Systems, Inc. All rights reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -28,4 +28,4 @@ public protocol SerializableValueDecodable {
     init(serializable: SerializableValue) throws
 }
 
-public typealias SerializableProtocol = SerializableValueDecodable & SerializableValueEncodable
+public typealias SerializableValueCodable = SerializableValueDecodable & SerializableValueEncodable
