@@ -20,12 +20,12 @@
 
 import Foundation
 
-public protocol SerializableValueEncodable {
+public protocol SerializableValueRepresentable {
     var serializable: SerializableValue { get }
 }
 
-public protocol SerializableValueDecodable {
+public protocol SerializableValueInitializable {
     init(serializable: SerializableValue) throws
 }
 
-public typealias SerializableValueCodable = SerializableValueDecodable & SerializableValueEncodable
+public typealias SerializableValueConvertible = SerializableValueInitializable & SerializableValueRepresentable

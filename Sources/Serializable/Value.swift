@@ -31,15 +31,15 @@ public enum SerializableValue: Codable, Equatable, Hashable {
     case array(Array<SerializableValue>)
     case object(Dictionary<String, SerializableValue>)
     
-    public init(_ value: SerializableValueEncodable) {
+    public init(_ value: SerializableValueRepresentable) {
         self = value.serializable
     }
 
-    public init(_ array: Array<SerializableValueEncodable>) {
+    public init(_ array: Array<SerializableValueRepresentable>) {
         self = .array(array.map { $0.serializable })
     }
 
-    public init(_ dict: Dictionary<String, SerializableValueEncodable>) {
+    public init(_ dict: Dictionary<String, SerializableValueRepresentable>) {
         self = .object(dict.mapValues{ $0.serializable })
     }
     
@@ -58,6 +58,8 @@ public enum SerializableValue: Codable, Equatable, Hashable {
             self = .date(date)
         } else if let string = try? container.decode(String.self) {
             self = .string(string)
+        } else if let data = try? container.decode(Data.self) {
+            self = .bytes(data)
         } else if let array = try? container.decode([SerializableValue].self) {
             self = .array(array)
         } else if let object = try? container.decode([String: SerializableValue].self) {
@@ -91,23 +93,23 @@ public enum SerializableValue: Codable, Equatable, Hashable {
     }
     
     public struct DataDecodingStrategy {
-        public let decode: (SerializableValueEncodable) throws -> Data
+        public let decode: (SerializableValueRepresentable) throws -> Data
         
-        public init(decode: @escaping (SerializableValueEncodable) throws -> Data) {
+        public init(decode: @escaping (SerializableValueRepresentable) throws -> Data) {
             self.decode = decode
         }
     }
     
     public struct DateDecodingStrategy {
-        public let decode: (SerializableValueEncodable) throws -> Date
+        public let decode: (SerializableValueRepresentable) throws -> Date
         
-        public init(decode: @escaping (SerializableValueEncodable) throws -> Date) {
+        public init(decode: @escaping (SerializableValueRepresentable) throws -> Date) {
             self.decode = decode
         }
     }
 }
 
-extension SerializableValue: SerializableValueCodable {
+extension SerializableValue: SerializableValueConvertible {
     public init(serializable: SerializableValue) throws {
         self = serializable
     }

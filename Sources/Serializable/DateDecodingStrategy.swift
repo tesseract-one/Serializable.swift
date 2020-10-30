@@ -22,11 +22,8 @@ import Foundation
 
 extension SerializableValue.DateDecodingStrategy {
     /// Return Date only if parser can parse it.
-    public static let deferredToParser = Self { input in
-        guard case .date(let date) = input.serializable else {
-            throw SerializableValue.Error.notInitializable(input.serializable)
-        }
-        return date
+    public static let deferredToDate = Self { input in
+        return try Date(serializable: input.serializable)
     }
     
     /// Decode the `Date` as a ISO8601 string with milliseconds.

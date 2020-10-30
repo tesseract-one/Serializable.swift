@@ -21,6 +21,10 @@
 import Foundation
 
 extension SerializableValue.DataDecodingStrategy {
+    public static let deferredToData = Self { input in
+        return try Data(serializable: input.serializable)
+    }
+    
     public static let base64 = Self { input in
         if case .bytes(let data) = input.serializable { return data }
         guard case .string(let string) = input.serializable else {

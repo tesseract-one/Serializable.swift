@@ -28,8 +28,8 @@ class SerializableTests: XCTestCase {
         let value = try? decoder.decode(SerializableValue.self, from: data)
         let obj = value?.object
         XCTAssertEqual(obj?["int"]?.int, -123)
-        XCTAssertEqual(obj?["array"]?.array, [.int(1), .int(2), .int(3)])
-        XCTAssertEqual(obj?["array"]?.array?[2], 3)
+        XCTAssertEqual(obj?["array"]?.array?.tryParse(Int64.self), [1, 2, 3])
+        XCTAssertEqual(obj?["array"]?.array?[2].int, 3)
         XCTAssertEqual(obj?["float"]?.float, 123.456)
         XCTAssertEqual(obj?["date"]?.date, Date(timeIntervalSince1970: 1569477510.996))
         XCTAssertEqual(obj?["bytes"]?.bytes, "test".data(using: .utf8))
@@ -61,6 +61,7 @@ class SerializableTests: XCTestCase {
         object["bool"] = false
         object["optional"] = .nil
         object["object"] = ["a": "b"]
+        
         let encoder = JSONEncoder()
         encoder.dataEncodingStrategy = .base64
         encoder.dateEncodingStrategy = .iso8601millis
