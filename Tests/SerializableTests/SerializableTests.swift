@@ -51,7 +51,7 @@ class SerializableTests: XCTestCase {
     }
     
     func testEncoding() {
-        var object = Dictionary<String, SerializableValueRepresentable>()
+        var object = Dictionary<String, SerializableValueConvertible>()
         object["int"] = Int64(-123)
         object["array"] = [Int64(1), Int64(2), Int64(3)]
         object["float"] = 123.456

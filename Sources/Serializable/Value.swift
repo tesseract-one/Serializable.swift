@@ -31,15 +31,15 @@ public enum SerializableValue: Codable, Equatable, Hashable {
     case array(Array<SerializableValue>)
     case object(Dictionary<String, SerializableValue>)
     
-    public init(_ value: SerializableValueRepresentable) {
+    public init(_ value: SerializableValueConvertible) {
         self = value.serializable
     }
 
-    public init(_ array: Array<SerializableValueRepresentable>) {
+    public init(_ array: Array<SerializableValueConvertible>) {
         self = .array(array.map { $0.serializable })
     }
 
-    public init(_ dict: Dictionary<String, SerializableValueRepresentable>) {
+    public init(_ dict: Dictionary<String, SerializableValueConvertible>) {
         self = .object(dict.mapValues{ $0.serializable })
     }
     
@@ -93,23 +93,23 @@ public enum SerializableValue: Codable, Equatable, Hashable {
     }
     
     public struct DataDecodingStrategy {
-        public let decode: (SerializableValueRepresentable) throws -> Data
+        public let decode: (SerializableValueConvertible) throws -> Data
         
-        public init(decode: @escaping (SerializableValueRepresentable) throws -> Data) {
+        public init(decode: @escaping (SerializableValueConvertible) throws -> Data) {
             self.decode = decode
         }
     }
     
     public struct DateDecodingStrategy {
-        public let decode: (SerializableValueRepresentable) throws -> Date
+        public let decode: (SerializableValueConvertible) throws -> Date
         
-        public init(decode: @escaping (SerializableValueRepresentable) throws -> Date) {
+        public init(decode: @escaping (SerializableValueConvertible) throws -> Date) {
             self.decode = decode
         }
     }
 }
 
-extension SerializableValue: SerializableValueConvertible {
+extension SerializableValue: SerializableValueRepresentable {
     public init(serializable: SerializableValue) throws {
         self = serializable
     }
