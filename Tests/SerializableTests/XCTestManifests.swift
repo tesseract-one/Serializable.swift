@@ -10,6 +10,7 @@ extension CustomEncoderTests {
         ("testHex0xDataEncoding", testHex0xDataEncoding),
         ("testHexDataDecoding", testHexDataDecoding),
         ("testHexDataEncoding", testHexDataEncoding),
+        ("testPrefixedHexDataDecoding", testPrefixedHexDataDecoding),
     ]
 }
 
@@ -19,6 +20,7 @@ extension SerializableTests {
     // to regenerate.
     static let __allTests__SerializableTests = [
         ("testDecoding", testDecoding),
+        ("testEncoding", testEncoding),
     ]
 }
 

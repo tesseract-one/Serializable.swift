@@ -42,6 +42,13 @@ class CustomEncoderTests: XCTestCase {
         XCTAssertEqual(value?.object?["data"]?.bytes(.hex), data)
     }
     
+    func testPrefixedHexDataDecoding() {
+        let json = "{\"data\":\"0x0102030A0FBADDEF\"}".data(using: .utf8)!
+        let data = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef])
+        let value = try? Self.decoder.decode(SerializableValue.self, from: json)
+        XCTAssertEqual(value?.object?["data"]?.bytes(.hex), data)
+    }
+    
     func testBase64DataDecoding() {
         let json = "{\"data\":\"dGVzdA==\"}".data(using: .utf8)!
         let data = "test".data(using: .utf8)!
