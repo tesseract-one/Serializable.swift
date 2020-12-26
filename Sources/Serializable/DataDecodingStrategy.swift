@@ -43,30 +43,32 @@ extension SerializableValue.DataDecodingStrategy {
         guard case .string(let string) = serializable else {
             throw SerializableValue.Error.notInitializable(serializable)
         }
-        let scalars = string.unicodeScalars
-        guard scalars.count % 2 == 0 else {
+        guard let data = string.data(using: .ascii), data.count % 2 == 0 else {
             throw SerializableValue.Error.notInitializable(serializable)
         }
         let prefix = string.hasPrefix("0x") ? 2 : 0
-        var result = Data(repeating: 0, count: (scalars.count - prefix) / 2)
-        var current: UInt8? = nil
-        for cIdx in prefix..<scalars.count {
-            let idx = scalars.index(scalars.startIndex, offsetBy: cIdx)
-            let v: UInt8
-            switch UInt8(scalars[idx].value) {
-            case let c where c <= 57: v = c - 48
-            case let c where c >= 65 && c <= 70: v = c - 55
-            case let c where c >= 97: v = c - 87
-            default:
-                throw SerializableValue.Error.notInitializable(serializable)
+        let parsed: Data = try data.withUnsafeBytes() { hex in
+            var result = Data()
+            result.reserveCapacity((hex.count - prefix) / 2)
+            var current: UInt8? = nil
+            for indx in prefix ..< hex.count {
+                let v: UInt8
+                switch hex[indx] {
+                case let c where c <= 57: v = c - 48
+                case let c where c >= 65 && c <= 70: v = c - 55
+                case let c where c >= 97: v = c - 87
+                default:
+                    throw SerializableValue.Error.notInitializable(serializable)
+                }
+                if let val = current {
+                    result.append(val << 4 | v)
+                    current = nil
+                } else {
+                    current = v
+                }
             }
-            if let val = current {
-                result[(cIdx - prefix)/2] = val << 4 | v
-                current = nil
-            } else {
-                current = v
-            }
+            return result
         }
-        return result
+        return parsed
     }
 }

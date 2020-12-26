@@ -737,7 +737,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
@@ -763,7 +763,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
@@ -825,7 +825,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
@@ -851,7 +851,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = macosx;
@@ -915,7 +915,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = appletvos;
@@ -940,7 +940,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = appletvos;
@@ -1004,7 +1004,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = watchos;
@@ -1030,7 +1030,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.2;
+				MARKETING_VERSION = 0.2.3;
 				PRODUCT_BUNDLE_IDENTIFIER = one.tesseract.Serializable;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = watchos;
