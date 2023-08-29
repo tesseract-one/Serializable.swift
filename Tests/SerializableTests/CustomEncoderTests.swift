@@ -38,26 +38,26 @@ class CustomEncoderTests: XCTestCase {
     func testHexDataDecoding() {
         let json = "{\"data\":\"0102030A0FBADDEF\"}".data(using: .utf8)!
         let data = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef])
-        let value = try? Self.decoder.decode(SerializableValue.self, from: json)
+        let value = try? Self.decoder.decode(Value.self, from: json)
         XCTAssertEqual(value?.object?["data"]?.bytes(.hex), data)
     }
     
     func testPrefixedHexDataDecoding() {
         let json = "{\"data\":\"0x0102030A0FBADDEF\"}".data(using: .utf8)!
         let data = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef])
-        let value = try? Self.decoder.decode(SerializableValue.self, from: json)
+        let value = try? Self.decoder.decode(Value.self, from: json)
         XCTAssertEqual(value?.object?["data"]?.bytes(.hex), data)
     }
     
     func testBase64DataDecoding() {
         let json = "{\"data\":\"dGVzdA==\"}".data(using: .utf8)!
         let data = "test".data(using: .utf8)!
-        let value = try? Self.decoder.decode(SerializableValue.self, from: json)
+        let value = try? Self.decoder.decode(Value.self, from: json)
         XCTAssertEqual(value?.object?["data"]?.bytes(.base64), data)
     }
 
     func testHexDataEncoding() {
-        var dictionary = Dictionary<String, SerializableValue>()
+        var dictionary = Dictionary<String, Value>()
         dictionary["data"] = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef]).serializable
         let json = "{\"data\":\"0102030a0fbaddef\"}".data(using: .utf8)!
         let encoded = try? Self.encoder.encode(dictionary)
@@ -65,7 +65,7 @@ class CustomEncoderTests: XCTestCase {
     }
     
     func testHex0xDataEncoding() {
-        var dictionary = Dictionary<String, SerializableValue>()
+        var dictionary = Dictionary<String, Value>()
         dictionary["data"] = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef]).serializable
         let json = "{\"data\":\"0x0102030a0fbaddef\"}".data(using: .utf8)!
         let encoder = JSONEncoder()

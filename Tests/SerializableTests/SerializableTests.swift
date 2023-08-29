@@ -25,7 +25,7 @@ class SerializableTests: XCTestCase {
     func parseAndCheck(data: Data) {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601millis
-        let value = try? decoder.decode(SerializableValue.self, from: data)
+        let value = try? decoder.decode(Value.self, from: data)
         let obj = value?.object
         XCTAssertEqual(obj?["int"]?.int, -123)
         XCTAssertEqual(obj?["array"]?.array?.tryParse(Int64.self), [1, 2, 3])
@@ -51,7 +51,7 @@ class SerializableTests: XCTestCase {
     }
     
     func testEncoding() {
-        var object = Dictionary<String, SerializableValueConvertible>()
+        var object = Dictionary<String, ValueConvertible>()
         object["int"] = Int64(-123)
         object["array"] = [Int64(1), Int64(2), Int64(3)]
         object["float"] = 123.456
@@ -65,7 +65,7 @@ class SerializableTests: XCTestCase {
         let encoder = JSONEncoder()
         encoder.dataEncodingStrategy = .base64
         encoder.dateEncodingStrategy = .iso8601millis
-        let data = try? encoder.encode(SerializableValue(object))
+        let data = try? encoder.encode(Value(object))
         XCTAssertNotNil(data)
         if let data = data {
             parseAndCheck(data: data)

@@ -20,7 +20,7 @@
 
 import Foundation
 
-extension SerializableValue.DataDecodingStrategy {
+extension Value.DataDecodingStrategy {
     public static let deferredToData = Self { input in
         return try Data(serializable: input.serializable)
     }
@@ -29,10 +29,10 @@ extension SerializableValue.DataDecodingStrategy {
         let serializable = input.serializable
         if case .bytes(let data) = serializable { return data }
         guard case .string(let string) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         guard let data = Data(base64Encoded: string) else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         return data
     }
@@ -41,10 +41,10 @@ extension SerializableValue.DataDecodingStrategy {
         let serializable = input.serializable
         if case .bytes(let data) = serializable { return data }
         guard case .string(let string) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         guard let data = string.data(using: .ascii), data.count % 2 == 0 else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         let prefix = string.hasPrefix("0x") ? 2 : 0
         let parsed: Data = try data.withUnsafeBytes() { hex in
@@ -58,7 +58,7 @@ extension SerializableValue.DataDecodingStrategy {
                 case let c where c >= 65 && c <= 70: v = c - 55
                 case let c where c >= 97: v = c - 87
                 default:
-                    throw SerializableValue.Error.notInitializable(serializable)
+                    throw Value.Error.notInitializable(serializable)
                 }
                 if let val = current {
                     result.append(val << 4 | v)

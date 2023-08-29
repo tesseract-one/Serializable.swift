@@ -20,7 +20,7 @@
 
 import Foundation
 
-extension SerializableValue.DateDecodingStrategy {
+extension Value.DateDecodingStrategy {
     /// Return Date only if parser can parse it.
     public static let deferredToDate = Self { input in
         return try Date(serializable: input.serializable)
@@ -32,11 +32,11 @@ extension SerializableValue.DateDecodingStrategy {
         case .date(let date): return date
         case .string(let str):
             guard let date = DateFormatter.iso8601millis.date(from: str) else {
-                throw SerializableValue.Error.notInitializable(input.serializable)
+                throw Value.Error.notInitializable(input.serializable)
             }
             return date
         default:
-            throw SerializableValue.Error.notInitializable(input.serializable)
+            throw Value.Error.notInitializable(input.serializable)
         }
     }
     
@@ -47,7 +47,7 @@ extension SerializableValue.DateDecodingStrategy {
         case .int(let int): return Date(timeIntervalSince1970: TimeInterval(int))
         case .float(let float): return Date(timeIntervalSince1970: TimeInterval(float))
         default:
-            throw SerializableValue.Error.notInitializable(input.serializable)
+            throw Value.Error.notInitializable(input.serializable)
         }
     }
 
@@ -58,7 +58,7 @@ extension SerializableValue.DateDecodingStrategy {
         case .int(let int): return Date(timeIntervalSince1970: TimeInterval(int) / 1000.0)
         case .float(let float): return Date(timeIntervalSince1970: TimeInterval(float) / 1000.0)
         default:
-            throw SerializableValue.Error.notInitializable(input.serializable)
+            throw Value.Error.notInitializable(input.serializable)
         }
     }
 }

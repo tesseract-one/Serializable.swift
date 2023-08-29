@@ -20,18 +20,18 @@
 
 import Foundation
 
-extension Int64: SerializableValueRepresentable {
-    public init(serializable: SerializableValue) throws {
+extension Int64: ValueRepresentable {
+    public init(serializable: Value) throws {
         guard case .int(let int) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         self = int
     }
     
-    public var serializable: SerializableValue { .int(self) }
+    public var serializable: Value { .int(self) }
 }
 
-extension SerializableValue: ExpressibleByIntegerLiteral {
+extension Value: ExpressibleByIntegerLiteral {
     public typealias IntegerLiteralType = Int64
 
     public init(integerLiteral value: IntegerLiteralType) {
@@ -39,24 +39,24 @@ extension SerializableValue: ExpressibleByIntegerLiteral {
     }
 }
 
-extension SerializableValue {
+extension Value {
     public var int: Int64? { try? Int64(serializable: self) }
 }
 
-extension Double: SerializableValueRepresentable {
-    public init(serializable: SerializableValue) throws {
+extension Double: ValueRepresentable {
+    public init(serializable: Value) throws {
         switch serializable {
         case .float(let num): self = num
         case .int(let int): self = Double(int)
         default:
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
     }
     
-    public var serializable: SerializableValue { .float(self) }
+    public var serializable: Value { .float(self) }
 }
 
-extension SerializableValue: ExpressibleByFloatLiteral {
+extension Value: ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = Double
     
     public init(floatLiteral value: FloatLiteralType) {
@@ -64,22 +64,22 @@ extension SerializableValue: ExpressibleByFloatLiteral {
     }
 }
 
-extension SerializableValue {
+extension Value {
     public var float: Double? { try? Double(serializable: self) }
 }
 
-extension Bool: SerializableValueRepresentable {
-    public init(serializable: SerializableValue) throws {
+extension Bool: ValueRepresentable {
+    public init(serializable: Value) throws {
         guard case .bool(let bool) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         self = bool
     }
     
-    public var serializable: SerializableValue { .bool(self) }
+    public var serializable: Value { .bool(self) }
 }
 
-extension SerializableValue: ExpressibleByBooleanLiteral {
+extension Value: ExpressibleByBooleanLiteral {
     public typealias BooleanLiteralType = Bool
     
     public init(booleanLiteral value: BooleanLiteralType) {
@@ -87,22 +87,22 @@ extension SerializableValue: ExpressibleByBooleanLiteral {
     }
 }
 
-extension SerializableValue {
+extension Value {
     public var bool: Bool? { try? Bool(serializable: self) }
 }
 
-extension Date: SerializableValueRepresentable {
-    public init(serializable: SerializableValue) throws {
+extension Date: ValueRepresentable {
+    public init(serializable: Value) throws {
         guard case .date(let date) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         self = date
     }
     
-    public var serializable: SerializableValue { .date(self) }
+    public var serializable: Value { .date(self) }
 }
 
-extension SerializableValue {
+extension Value {
     public var date: Date? { date() }
     
     public func date(_ decoder: DateDecodingStrategy = .deferredToDate) -> Date? {
@@ -110,18 +110,18 @@ extension SerializableValue {
     }
 }
 
-extension Data: SerializableValueRepresentable {
-    public init(serializable: SerializableValue) throws {
+extension Data: ValueRepresentable {
+    public init(serializable: Value) throws {
         guard case .bytes(let data) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         self = data
     }
     
-    public var serializable: SerializableValue { .bytes(self) }
+    public var serializable: Value { .bytes(self) }
 }
 
-extension SerializableValue {
+extension Value {
     public var bytes: Data? { bytes() }
     
     public func bytes(_ decoder: DataDecodingStrategy = .base64) -> Data? {
@@ -129,16 +129,18 @@ extension SerializableValue {
     }
 }
 
-extension String: SerializableValueRepresentable {
-    public init(serializable: SerializableValue) throws {
-        guard case .string(let str) = serializable else { throw SerializableValue.Error.notInitializable(serializable) }
+extension String: ValueRepresentable {
+    public init(serializable: Value) throws {
+        guard case .string(let str) = serializable else {
+            throw Value.Error.notInitializable(serializable)
+        }
         self = str
     }
     
-    public var serializable: SerializableValue { .string(self) }
+    public var serializable: Value { .string(self) }
 }
 
-extension SerializableValue: ExpressibleByStringLiteral {
+extension Value: ExpressibleByStringLiteral {
     public typealias StringLiteralType = String
     
     public init(stringLiteral value: StringLiteralType) {
@@ -146,137 +148,137 @@ extension SerializableValue: ExpressibleByStringLiteral {
     }
 }
 
-extension SerializableValue {
+extension Value {
     public var string: String? { try? String(serializable: self) }
 }
 
-extension Array: SerializableValueConvertible where Element: SerializableValueConvertible {
-    public var serializable: SerializableValue {
+extension Array: ValueConvertible where Element: ValueConvertible {
+    public var serializable: Value {
         .array(self.map{$0.serializable})
     }
 }
 
-extension Array: SerializableValueInitializable where Element: SerializableValueInitializable {
-    public init(serializable: SerializableValue) throws {
+extension Array: ValueInitializable where Element: ValueInitializable {
+    public init(serializable: Value) throws {
         guard case .array(let array) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Value.Error.notInitializable(serializable)
         }
         self = try array.map{ try Element(serializable: $0) }
     }
 }
 
-extension Array where Element: SerializableValueConvertible {
-    public func tryParse<E>(parser: @escaping (SerializableValue) throws -> E) -> [E]? {
+extension Array where Element: ValueConvertible {
+    public func tryParse<E>(parser: @escaping (Value) throws -> E) -> [E]? {
         try? map { try parser($0.serializable) }
     }
     
     public func tryParse<E>(_ type: E.Type) -> [E]?
-        where E: SerializableValueInitializable
+        where E: ValueInitializable
     {
         tryParse { try E(serializable: $0) }
     }
     
     public func tryParse<E>() -> [E]?
-        where E: SerializableValueInitializable
+        where E: ValueInitializable
     {
         tryParse(E.self)
     }
     
     public func tryParse(
-        _ parser: SerializableValue.DateDecodingStrategy = .deferredToDate
+        _ parser: Value.DateDecodingStrategy = .deferredToDate
     ) -> [Date]? {
         tryParse { try parser.decode($0) }
     }
     
     public func tryParse(
-        _ parser: SerializableValue.DataDecodingStrategy = .base64
+        _ parser: Value.DataDecodingStrategy = .base64
     ) -> [Data]? {
         tryParse { try parser.decode($0) }
     }
 }
 
-extension SerializableValue: ExpressibleByArrayLiteral {
-    public typealias ArrayLiteralElement = SerializableValueConvertible
+extension Value: ExpressibleByArrayLiteral {
+    public typealias ArrayLiteralElement = ValueConvertible
     
     public init(arrayLiteral elements: ArrayLiteralElement...) {
         self.init(elements)
     }
 }
 
-extension SerializableValue {
-    public var array: Array<SerializableValue>? { try? Array(serializable: self) }
+extension Value {
+    public var array: Array<Self>? { try? Array(serializable: self) }
 }
 
-extension Dictionary: SerializableValueInitializable where Key == String, Value: SerializableValueInitializable {
-    public init(serializable: SerializableValue) throws {
+extension Dictionary: ValueInitializable where Key == String, Value: ValueInitializable {
+    public init(serializable: Serializable.Value) throws {
         guard case .object(let obj) = serializable else {
-            throw SerializableValue.Error.notInitializable(serializable)
+            throw Serializable.Value.Error.notInitializable(serializable)
         }
         self = try obj.mapValues { try Value(serializable: $0) }
     }
 }
 
-extension Dictionary: SerializableValueConvertible where Key == String, Value: SerializableValueConvertible {
-    public var serializable: SerializableValue {
+extension Dictionary: ValueConvertible where Key == String, Value: ValueConvertible {
+    public var serializable: Serializable.Value {
         .object(self.mapValues{$0.serializable})
     }
 }
 
-extension Dictionary where Key == String, Value: SerializableValueConvertible {
-    public func tryParse<E>(parser: @escaping (SerializableValue) throws -> E) -> [String: E]? {
+extension Dictionary where Key == String, Value: ValueConvertible {
+    public func tryParse<E>(parser: @escaping (Serializable.Value) throws -> E) -> [String: E]? {
         try? mapValues { try parser($0.serializable) }
     }
     
     public func tryParse<E>(_ type: E.Type) -> [String: E]?
-        where E: SerializableValueInitializable
+        where E: ValueInitializable
     {
         tryParse { try E(serializable: $0) }
     }
     
     public func tryParse<E>() -> [String: E]?
-        where E: SerializableValueInitializable
+        where E: ValueInitializable
     {
         tryParse(E.self)
     }
     
     public func tryParse(
-        _ parser: SerializableValue.DateDecodingStrategy = .deferredToDate
+        _ parser: Serializable.Value.DateDecodingStrategy = .deferredToDate
     ) -> [String: Date]? {
         tryParse { try parser.decode($0) }
     }
     
     public func tryParse(
-        _ parser: SerializableValue.DataDecodingStrategy = .base64
+        _ parser: Serializable.Value.DataDecodingStrategy = .base64
     ) -> [String: Data]? {
         tryParse { try parser.decode($0) }
     }
 }
 
-extension SerializableValue: ExpressibleByDictionaryLiteral {
+extension Value: ExpressibleByDictionaryLiteral {
     public typealias Key = String
-    public typealias Value = SerializableValueConvertible
+    public typealias Value = ValueConvertible
     
     public init(dictionaryLiteral elements: (Key, Value)...) {
         self.init(Dictionary(uniqueKeysWithValues: elements) )
     }
 }
 
-extension SerializableValue {
-    public var object: Dictionary<String, SerializableValue>? {
+extension Value {
+    public var object: Dictionary<String, Self>? {
         try? Dictionary(serializable: self)
     }
 }
 
-extension Optional: SerializableValueConvertible where Wrapped: SerializableValueConvertible {
-    public var serializable: SerializableValue {
+extension Optional: ValueConvertible where Wrapped: ValueConvertible {
+    public var serializable: Value {
         switch self {
         case .none: return .nil
         case .some(let val): return val.serializable
         }
     }
 }
-extension Optional: SerializableValueInitializable where Wrapped: SerializableValueInitializable {
-    public init(serializable: SerializableValue) throws {
+extension Optional: ValueInitializable where Wrapped: ValueInitializable {
+    public init(serializable: Value) throws {
         switch serializable {
         case .nil: self = .none
         default: self = try .some(Wrapped(serializable: serializable))
@@ -285,15 +287,15 @@ extension Optional: SerializableValueInitializable where Wrapped: SerializableVa
 }
 
 extension Optional {
-    public static var `nil`: SerializableValueRepresentable { SerializableValue.nil }
+    public static var `nil`: ValueRepresentable { Value.nil }
 }
 
-extension SerializableValue: ExpressibleByNilLiteral {
+extension Value: ExpressibleByNilLiteral {
     public init(nilLiteral: ()) {
         self = .nil
     }
 }
 
-extension SerializableValue {
+extension Value {
     public var isNil: Bool { self == .nil }
 }

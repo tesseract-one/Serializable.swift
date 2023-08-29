@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum SerializableValue: Codable, Equatable, Hashable {
+public enum Value: Codable, Equatable, Hashable {
     case `nil`
     case bool(Bool)
     case int(Int64)
@@ -28,18 +28,18 @@ public enum SerializableValue: Codable, Equatable, Hashable {
     case string(String)
     case date(Date)
     case bytes(Data)
-    case array(Array<SerializableValue>)
-    case object(Dictionary<String, SerializableValue>)
+    case array(Array<Self>)
+    case object(Dictionary<String, Self>)
     
-    public init(_ value: SerializableValueConvertible) {
+    public init(_ value: ValueConvertible) {
         self = value.serializable
     }
 
-    public init(_ array: Array<SerializableValueConvertible>) {
+    public init(_ array: Array<ValueConvertible>) {
         self = .array(array.map { $0.serializable })
     }
 
-    public init(_ dict: Dictionary<String, SerializableValueConvertible>) {
+    public init(_ dict: Dictionary<String, ValueConvertible>) {
         self = .object(dict.mapValues{ $0.serializable })
     }
     
@@ -60,9 +60,9 @@ public enum SerializableValue: Codable, Equatable, Hashable {
             self = .string(string)
         } else if let data = try? container.decode(Data.self) {
             self = .bytes(data)
-        } else if let array = try? container.decode([SerializableValue].self) {
+        } else if let array = try? container.decode([Self].self) {
             self = .array(array)
-        } else if let object = try? container.decode([String: SerializableValue].self) {
+        } else if let object = try? container.decode([String: Self].self) {
             self = .object(object)
         } else {
             throw DecodingError.dataCorruptedError(
@@ -89,35 +89,35 @@ public enum SerializableValue: Codable, Equatable, Hashable {
     }
     
     public enum Error: Swift.Error {
-        case notInitializable(SerializableValue)
+        case notInitializable(Value)
     }
     
     public struct DataDecodingStrategy {
-        public let decode: (SerializableValueConvertible) throws -> Data
+        public let decode: (ValueConvertible) throws -> Data
         
-        public init(decode: @escaping (SerializableValueConvertible) throws -> Data) {
+        public init(decode: @escaping (ValueConvertible) throws -> Data) {
             self.decode = decode
         }
     }
     
     public struct DateDecodingStrategy {
-        public let decode: (SerializableValueConvertible) throws -> Date
+        public let decode: (ValueConvertible) throws -> Date
         
-        public init(decode: @escaping (SerializableValueConvertible) throws -> Date) {
+        public init(decode: @escaping (ValueConvertible) throws -> Date) {
             self.decode = decode
         }
     }
 }
 
-extension SerializableValue: SerializableValueRepresentable {
-    public init(serializable: SerializableValue) throws {
+extension Value: ValueRepresentable {
+    public init(serializable: Serializable.Value) throws {
         self = serializable
     }
     
-    public var serializable: SerializableValue { self }
+    public var serializable: Serializable.Value { self }
 }
 
-extension SerializableValue: CustomDebugStringConvertible {
+extension Value: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .nil: return "null"
