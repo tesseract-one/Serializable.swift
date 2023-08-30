@@ -65,13 +65,13 @@ import Serializable
 
 let json = """
 {
-  "message": "Hello, World!"
+  "message": { "text": "Hello, World!" }
 }
 """.data(using: .utf8)!
 
-let value = try! JSONDecoder().decode(Value.self, from: json)
+let value = try! JSONDecoder().decode(AnyValue.self, from: json)
 
-print("Message:", value.object!["message"].string!)
+print("Message:", value["message.text"]!.string!)
 ```
 
 ## Author

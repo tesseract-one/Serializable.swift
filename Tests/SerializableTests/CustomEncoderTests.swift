@@ -24,52 +24,52 @@ import XCTest
 class CustomEncoderTests: XCTestCase {
     static let encoder: JSONEncoder = {
         var encoder = JSONEncoder()
-        encoder.dataEncodingStrategy = .hex
-        encoder.dateEncodingStrategy = .iso8601millis
+        encoder.dataEncodingStrategy = .sz_hex
+        encoder.dateEncodingStrategy = .sz_iso8601millis
         return encoder
     }()
     
     static let decoder: JSONDecoder = {
         var encoder = JSONDecoder()
-        encoder.dateDecodingStrategy = .iso8601millis
+        encoder.dateDecodingStrategy = .sz_iso8601millis
         return encoder
     }()
     
     func testHexDataDecoding() {
         let json = "{\"data\":\"0102030A0FBADDEF\"}".data(using: .utf8)!
         let data = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef])
-        let value = try? Self.decoder.decode(Value.self, from: json)
+        let value = try? Self.decoder.decode(AnyValue.self, from: json)
         XCTAssertEqual(value?.object?["data"]?.bytes(.hex), data)
     }
     
     func testPrefixedHexDataDecoding() {
         let json = "{\"data\":\"0x0102030A0FBADDEF\"}".data(using: .utf8)!
         let data = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef])
-        let value = try? Self.decoder.decode(Value.self, from: json)
+        let value = try? Self.decoder.decode(AnyValue.self, from: json)
         XCTAssertEqual(value?.object?["data"]?.bytes(.hex), data)
     }
     
     func testBase64DataDecoding() {
         let json = "{\"data\":\"dGVzdA==\"}".data(using: .utf8)!
         let data = "test".data(using: .utf8)!
-        let value = try? Self.decoder.decode(Value.self, from: json)
+        let value = try? Self.decoder.decode(AnyValue.self, from: json)
         XCTAssertEqual(value?.object?["data"]?.bytes(.base64), data)
     }
 
     func testHexDataEncoding() {
-        var dictionary = Dictionary<String, Value>()
-        dictionary["data"] = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef]).serializable
+        var dictionary = Dictionary<String, AnyValue>()
+        dictionary["data"] = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef]).anyValue
         let json = "{\"data\":\"0102030a0fbaddef\"}".data(using: .utf8)!
         let encoded = try? Self.encoder.encode(dictionary)
         XCTAssertEqual(encoded, json)
     }
     
     func testHex0xDataEncoding() {
-        var dictionary = Dictionary<String, Value>()
-        dictionary["data"] = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef]).serializable
+        var dictionary = Dictionary<String, AnyValue>()
+        dictionary["data"] = Data([0x01, 0x02, 0x03, 0x0a, 0x0f, 0xba, 0xdd, 0xef]).anyValue
         let json = "{\"data\":\"0x0102030a0fbaddef\"}".data(using: .utf8)!
         let encoder = JSONEncoder()
-        encoder.dataEncodingStrategy = .prefixedHex
+        encoder.dataEncodingStrategy = .sz_prefixedHex
         let encoded = try? encoder.encode(dictionary)
         XCTAssertEqual(encoded, json)
     }

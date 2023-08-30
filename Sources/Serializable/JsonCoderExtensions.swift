@@ -21,7 +21,7 @@
 import Foundation
 
 extension Formatter {
-    public static let iso8601millis: DateFormatter = {
+    public static let sz_iso8601millis: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -32,22 +32,22 @@ extension Formatter {
 }
 
 extension JSONDecoder.DateDecodingStrategy {
-    public static let iso8601millis = formatted(.iso8601millis)
+    public static let sz_iso8601millis = formatted(.sz_iso8601millis)
 }
 
 extension JSONEncoder.DateEncodingStrategy {
-    public static let iso8601millis = formatted(.iso8601millis)
+    public static let sz_iso8601millis = formatted(.sz_iso8601millis)
 }
 
 extension JSONEncoder.DataEncodingStrategy {
-    private static let _srv_characters: [UInt8] = [
+    private static let _sz_characters: [UInt8] = [
         UInt8(ascii: "0"), UInt8(ascii: "1"), UInt8(ascii: "2"), UInt8(ascii: "3"),
         UInt8(ascii: "4"), UInt8(ascii: "5"), UInt8(ascii: "6"), UInt8(ascii: "7"),
         UInt8(ascii: "8"), UInt8(ascii: "9"), UInt8(ascii: "a"), UInt8(ascii: "b"),
         UInt8(ascii: "c"), UInt8(ascii: "d"), UInt8(ascii: "e"), UInt8(ascii: "f")
     ]
     
-    public static func srv_encodeHex(data: Data, prefix: Bool) -> String {
+    public static func sz_encodeHex(data: Data, prefix: Bool) -> String {
         var result = Array<UInt8>()
         result.reserveCapacity(data.count * 2 + (prefix ? 2 : 0))
         if prefix {
@@ -55,19 +55,19 @@ extension JSONEncoder.DataEncodingStrategy {
             result.append(UInt8(ascii: "x"))
         }
         for byte in data {
-            result.append(Self._srv_characters[Int(byte >> 4)])
-            result.append(Self._srv_characters[Int(byte & 0x0F)])
+            result.append(Self._sz_characters[Int(byte >> 4)])
+            result.append(Self._sz_characters[Int(byte & 0x0F)])
         }
         return String(bytes: result, encoding: .ascii)!
     }
     
-    public static let hex = custom { (data, encoder) in
+    public static let sz_hex = custom { (data, encoder) in
         var container = encoder.singleValueContainer()
-        try container.encode(Self.srv_encodeHex(data: data, prefix: false))
+        try container.encode(Self.sz_encodeHex(data: data, prefix: false))
     }
     
-    public static let prefixedHex = custom { (data, encoder) in
+    public static let sz_prefixedHex = custom { (data, encoder) in
         var container = encoder.singleValueContainer()
-        try container.encode(Self.srv_encodeHex(data: data, prefix: true))
+        try container.encode(Self.sz_encodeHex(data: data, prefix: true))
     }
 }

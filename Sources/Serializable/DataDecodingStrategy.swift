@@ -20,31 +20,31 @@
 
 import Foundation
 
-extension Value.DataDecodingStrategy {
+extension AnyValue.DataDecodingStrategy {
     public static let deferredToData = Self { input in
-        return try Data(serializable: input.serializable)
+        return try Data(anyValue: input.anyValue)
     }
     
     public static let base64 = Self { input in
-        let serializable = input.serializable
-        if case .bytes(let data) = serializable { return data }
-        guard case .string(let string) = serializable else {
-            throw Value.Error.notInitializable(serializable)
+        let value = input.anyValue
+        if case .bytes(let data) = value { return data }
+        guard case .string(let string) = value else {
+            throw AnyValue.NotInitializable(type: "Data", from: value)
         }
         guard let data = Data(base64Encoded: string) else {
-            throw Value.Error.notInitializable(serializable)
+            throw AnyValue.NotInitializable(type: "Data", from: value)
         }
         return data
     }
     
     public static let hex = Self { input in
-        let serializable = input.serializable
-        if case .bytes(let data) = serializable { return data }
-        guard case .string(let string) = serializable else {
-            throw Value.Error.notInitializable(serializable)
+        let value = input.anyValue
+        if case .bytes(let data) = value { return data }
+        guard case .string(let string) = value else {
+            throw AnyValue.NotInitializable(type: "Data", from: value)
         }
         guard let data = string.data(using: .ascii), data.count % 2 == 0 else {
-            throw Value.Error.notInitializable(serializable)
+            throw AnyValue.NotInitializable(type: "Data", from: value)
         }
         let prefix = string.hasPrefix("0x") ? 2 : 0
         let parsed: Data = try data.withUnsafeBytes() { hex in
@@ -58,7 +58,7 @@ extension Value.DataDecodingStrategy {
                 case let c where c >= 65 && c <= 70: v = c - 55
                 case let c where c >= 97: v = c - 87
                 default:
-                    throw Value.Error.notInitializable(serializable)
+                    throw AnyValue.NotInitializable(type: "Data", from: value)
                 }
                 if let val = current {
                     result.append(val << 4 | v)

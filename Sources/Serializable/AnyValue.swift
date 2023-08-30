@@ -1,5 +1,5 @@
 //
-//  Value.swift
+//  AnyValue.swift
 //  Serializable
 //
 //  Created by Yehor Popovych on 3/28/19.
@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum Value: Codable, Equatable, Hashable {
+public enum AnyValue: Codable, Equatable, Hashable {
     case `nil`
     case bool(Bool)
     case int(Int64)
@@ -31,16 +31,16 @@ public enum Value: Codable, Equatable, Hashable {
     case array(Array<Self>)
     case object(Dictionary<String, Self>)
     
-    public init(_ value: ValueConvertible) {
-        self = value.serializable
+    public init(_ value: AnyValueConvertible) {
+        self = value.anyValue
     }
 
-    public init(_ array: Array<ValueConvertible>) {
-        self = .array(array.map { $0.serializable })
+    public init(_ array: Array<AnyValueConvertible>) {
+        self = .array(array.map { $0.anyValue })
     }
 
-    public init(_ dict: Dictionary<String, ValueConvertible>) {
-        self = .object(dict.mapValues{ $0.serializable })
+    public init(_ dict: Dictionary<String, AnyValueConvertible>) {
+        self = .object(dict.mapValues{ $0.anyValue })
     }
     
     public init(from decoder: Decoder) throws {
@@ -88,46 +88,51 @@ public enum Value: Codable, Equatable, Hashable {
         }
     }
     
-    public enum Error: Swift.Error {
-        case notInitializable(Value)
+    public struct NotInitializable: Error {
+        public let type: String
+        public let from: AnyValue
+        public init(type: String, from: AnyValue) {
+            self.type = type
+            self.from = from
+        }
     }
     
     public struct DataDecodingStrategy {
-        public let decode: (ValueConvertible) throws -> Data
+        public let decode: (AnyValueConvertible) throws -> Data
         
-        public init(decode: @escaping (ValueConvertible) throws -> Data) {
+        public init(decode: @escaping (AnyValueConvertible) throws -> Data) {
             self.decode = decode
         }
     }
     
     public struct DateDecodingStrategy {
-        public let decode: (ValueConvertible) throws -> Date
+        public let decode: (AnyValueConvertible) throws -> Date
         
-        public init(decode: @escaping (ValueConvertible) throws -> Date) {
+        public init(decode: @escaping (AnyValueConvertible) throws -> Date) {
             self.decode = decode
         }
     }
 }
 
-extension Value: ValueRepresentable {
-    public init(serializable: Serializable.Value) throws {
-        self = serializable
+extension AnyValue: AnyValueRepresentable {
+    public init(anyValue: AnyValue) throws {
+        self = anyValue
     }
     
-    public var serializable: Serializable.Value { self }
+    public var anyValue: AnyValue { self }
 }
 
-extension Value: CustomDebugStringConvertible {
+extension AnyValue: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .nil: return "null"
         case .int(let int): return "\(int)"
         case .float(let num): return "\(num)"
         case .bool(let bool): return bool ? "true" : "false"
-        case .date(let date): return "\"\(DateFormatter.iso8601millis.string(from: date))\""
+        case .date(let date): return "\"\(DateFormatter.sz_iso8601millis.string(from: date))\""
         case .string(let str): return "\"\(str)\""
         case .bytes(let data):
-            return "\"\(JSONEncoder.DataEncodingStrategy.srv_encodeHex(data: data, prefix: false))\""
+            return "\"\(JSONEncoder.DataEncodingStrategy.sz_encodeHex(data: data, prefix: false))\""
         case .array(let arr):
             return "[\(arr.map{String(describing: $0)}.joined(separator: ", "))]"
         case .object(let obj):

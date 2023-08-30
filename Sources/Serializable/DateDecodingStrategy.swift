@@ -20,45 +20,45 @@
 
 import Foundation
 
-extension Value.DateDecodingStrategy {
+extension AnyValue.DateDecodingStrategy {
     /// Return Date only if parser can parse it.
     public static let deferredToDate = Self { input in
-        return try Date(serializable: input.serializable)
+        return try Date(anyValue: input.anyValue)
     }
     
     /// Decode the `Date` as a ISO8601 string with milliseconds.
     public static let iso8601millis = Self { input in
-        switch input.serializable {
+        switch input.anyValue {
         case .date(let date): return date
         case .string(let str):
-            guard let date = DateFormatter.iso8601millis.date(from: str) else {
-                throw Value.Error.notInitializable(input.serializable)
+            guard let date = DateFormatter.sz_iso8601millis.date(from: str) else {
+                throw AnyValue.NotInitializable(type: "Date", from: input.anyValue)
             }
             return date
         default:
-            throw Value.Error.notInitializable(input.serializable)
+            throw AnyValue.NotInitializable(type: "Date", from: input.anyValue)
         }
     }
     
     /// Decode the `Date` as a UNIX timestamp from a JSON number.
     public static let secondsSince1970 = Self { input in
-        switch input.serializable {
+        switch input.anyValue {
         case .date(let date): return date
         case .int(let int): return Date(timeIntervalSince1970: TimeInterval(int))
         case .float(let float): return Date(timeIntervalSince1970: TimeInterval(float))
         default:
-            throw Value.Error.notInitializable(input.serializable)
+            throw AnyValue.NotInitializable(type: "Date", from: input.anyValue)
         }
     }
 
     /// Decode the `Date` as UNIX millisecond timestamp from a JSON number.
     public static let millisecondsSince1970 = Self { input in
-        switch input.serializable {
+        switch input.anyValue {
         case .date(let date): return date
         case .int(let int): return Date(timeIntervalSince1970: TimeInterval(int) / 1000.0)
         case .float(let float): return Date(timeIntervalSince1970: TimeInterval(float) / 1000.0)
         default:
-            throw Value.Error.notInitializable(input.serializable)
+            throw AnyValue.NotInitializable(type: "Date", from: input.anyValue)
         }
     }
 }
