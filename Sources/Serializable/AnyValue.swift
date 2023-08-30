@@ -45,7 +45,6 @@ public enum AnyValue: Codable, Equatable, Hashable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        
         if container.decodeNil() {
             self = .nil
         } else if let bool = try? container.decode(Bool.self) {
@@ -74,7 +73,6 @@ public enum AnyValue: Codable, Equatable, Hashable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        
         switch self {
         case .nil: try container.encodeNil()
         case .bool(let bool): try container.encode(bool)
@@ -87,29 +85,15 @@ public enum AnyValue: Codable, Equatable, Hashable {
         case .object(let obj): try container.encode(obj)
         }
     }
-    
-    public struct NotInitializable: Error {
+}
+
+public extension AnyValue {
+    struct NotInitializable: Error {
         public let type: String
         public let from: AnyValue
         public init(type: String, from: AnyValue) {
             self.type = type
             self.from = from
-        }
-    }
-    
-    public struct DataDecodingStrategy {
-        public let decode: (AnyValueConvertible) throws -> Data
-        
-        public init(decode: @escaping (AnyValueConvertible) throws -> Data) {
-            self.decode = decode
-        }
-    }
-    
-    public struct DateDecodingStrategy {
-        public let decode: (AnyValueConvertible) throws -> Date
-        
-        public init(decode: @escaping (AnyValueConvertible) throws -> Date) {
-            self.decode = decode
         }
     }
 }

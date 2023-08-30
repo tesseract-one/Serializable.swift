@@ -20,16 +20,67 @@
 
 import Foundation
 
-extension Int64: AnyValueRepresentable {
-    public init(anyValue: AnyValue) throws {
-        guard case .int(let int) = anyValue else {
-            throw AnyValue.NotInitializable(type: "Int64", from: anyValue)
+public extension FixedWidthInteger {
+    init(anyValue: AnyValue) throws {
+        switch anyValue {
+        case .int(let int):
+            guard let val = Self(exactly: int) else {
+                throw AnyValue.NotInitializable(type: String(describing: Self.self),
+                                                from: anyValue)
+            }
+            self = val
+        case .float(let float):
+            guard let val = Self(exactly: float) else {
+                throw AnyValue.NotInitializable(type: String(describing: Self.self),
+                                                from: anyValue)
+            }
+            self = val
+        default:
+            throw AnyValue.NotInitializable(type: String(describing: Self.self),
+                                            from: anyValue)
         }
-        self = int
     }
     
-    public var anyValue: AnyValue { .int(self) }
+    var anyValue: AnyValue { .int(Int64(self)) }
 }
+
+public extension BinaryFloatingPoint {
+    init(anyValue: AnyValue) throws {
+        switch anyValue {
+        case .int(let int):
+            guard let val = Self(exactly: int) else {
+                throw AnyValue.NotInitializable(type: String(describing: Self.self),
+                                                from: anyValue)
+            }
+            self = val
+        case .float(let float):
+            guard let val = Self(exactly: float) else {
+                throw AnyValue.NotInitializable(type: String(describing: Self.self),
+                                                from: anyValue)
+            }
+            self = val
+        default:
+            throw AnyValue.NotInitializable(type: String(describing: Self.self),
+                                            from: anyValue)
+        }
+    }
+    
+    var anyValue: AnyValue { .float(Double(self)) }
+}
+
+extension UInt: AnyValueRepresentable {}
+extension UInt8: AnyValueRepresentable {}
+extension UInt16: AnyValueRepresentable {}
+extension UInt32: AnyValueRepresentable {}
+extension UInt64: AnyValueRepresentable {}
+extension Int: AnyValueRepresentable {}
+extension Int8: AnyValueRepresentable {}
+extension Int16: AnyValueRepresentable {}
+extension Int32: AnyValueRepresentable {}
+extension Int64: AnyValueRepresentable {}
+extension Float: AnyValueRepresentable {}
+extension Double: AnyValueRepresentable {}
+extension Float80: AnyValueRepresentable {}
 
 extension AnyValue: ExpressibleByIntegerLiteral {
     public typealias IntegerLiteralType = Int64
@@ -41,19 +92,6 @@ extension AnyValue: ExpressibleByIntegerLiteral {
 
 extension AnyValue {
     public var int: Int64? { try? Int64(anyValue: self) }
-}
-
-extension Double: AnyValueRepresentable {
-    public init(anyValue: AnyValue) throws {
-        switch anyValue {
-        case .float(let num): self = num
-        case .int(let int): self = Double(int)
-        default:
-            throw AnyValue.NotInitializable(type: "Double", from: anyValue)
-        }
-    }
-    
-    public var anyValue: AnyValue { .float(self) }
 }
 
 extension AnyValue: ExpressibleByFloatLiteral {

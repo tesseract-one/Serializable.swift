@@ -50,22 +50,69 @@ class SerializableTests: XCTestCase {
         parseAndCheck(data: json.data(using: .utf8)!)
     }
     
-    func testKeyPath() {
-        let value: AnyValue = [
-            "key1": ["key11": [Int64(1), 2, 3].anyValue, "key12": "test".anyValue],
-            "key2": ["key21": ["key211": ["1", "2", "3"]]]
-        ]
-        XCTAssertEqual(value["key1.key11.1"], 2)
-        XCTAssertEqual(value["key1.key12"], "test")
-        XCTAssertEqual(value["key2.key21.key211.2"], "3")
-        XCTAssertEqual(value["key2.key21.key211.3"], nil)
+    func testKey() {
+        let obj: AnyValue = ["key1": 123, "key2": "str", "key3": [12.3]]
+        XCTAssertEqual(obj["key2"], "str")
+        XCTAssertEqual(obj["key3"], [12.3])
+        XCTAssertNil(obj["key4"])
+        
+        let arr: AnyValue = [Int64(123), "str", [12.3]]
+        XCTAssertEqual(arr["0"], 123)
+        XCTAssertEqual(arr["2"], [12.3])
+        XCTAssertEqual(arr["-1"], [12.3])
+        XCTAssertEqual(arr["-2"], "str")
+        XCTAssertNil(arr["3"])
+        XCTAssertNil(arr["key1"])
+        
+        var mutObj: AnyValue = ["key2": "str"]
+        mutObj["key1"] = 123
+        mutObj["key3"] = [12.3]
+        XCTAssertEqual(mutObj, obj)
+        
+        var mutArr: AnyValue = [Int64(123)]
+        mutArr["1"] = "str"
+        mutArr["2"] = [12.3]
+        XCTAssertEqual(mutArr, arr)
+        mutArr = []
+        mutArr["3"] = 12.3
+        XCTAssertEqual(mutArr, [AnyValue.nil, AnyValue.nil, AnyValue.nil, 12.3])
+        mutArr["3"] = nil
+        XCTAssertEqual(mutArr, [AnyValue.nil, AnyValue.nil, AnyValue.nil])
+        mutArr = []
+        mutArr["0"] = nil
+        XCTAssertEqual(mutArr, [])
+        mutArr["0"] = 123
+        mutArr["0"] = nil
+        XCTAssertEqual(mutArr, [])
+        mutArr["0"] = .nil
+        XCTAssertEqual(mutArr, [AnyValue.nil])
     }
     
     func testIndex() {
-        let value: AnyValue = [Int64(1), Int64(2), Int64(3)]
-        XCTAssertEqual(value[0], 1)
-        XCTAssertEqual(value[1], 2)
-        XCTAssertEqual(value[2], 3)
+        let arr: AnyValue = [Int64(123), "str", [12.3]]
+        XCTAssertEqual(arr[0], 123)
+        XCTAssertEqual(arr[2], [12.3])
+        XCTAssertEqual(arr[-1], [12.3])
+        XCTAssertEqual(arr[-2], "str")
+        XCTAssertNil(arr[3])
+        
+        var mutArr: AnyValue = [Int64(123)]
+        mutArr[1] = "str"
+        mutArr[2] = [12.3]
+        XCTAssertEqual(mutArr, arr)
+        mutArr = []
+        mutArr[3] = 12.3
+        XCTAssertEqual(mutArr, [AnyValue.nil, AnyValue.nil, AnyValue.nil, 12.3])
+        mutArr[3] = nil
+        XCTAssertEqual(mutArr, [AnyValue.nil, AnyValue.nil, AnyValue.nil])
+        mutArr = []
+        mutArr[0] = nil
+        XCTAssertEqual(mutArr, [])
+        mutArr[0] = 123
+        mutArr[0] = nil
+        XCTAssertEqual(mutArr, [])
+        mutArr[0] = .nil
+        XCTAssertEqual(mutArr, [AnyValue.nil])
     }
     
     func testEncoding() {

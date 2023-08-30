@@ -20,12 +20,22 @@
 
 import Foundation
 
-extension AnyValue.DataDecodingStrategy {
-    public static let deferredToData = Self { input in
+public extension AnyValue {
+    struct DataDecodingStrategy {
+        public let decode: (AnyValueConvertible) throws -> Data
+        
+        public init(decode: @escaping (AnyValueConvertible) throws -> Data) {
+            self.decode = decode
+        }
+    }
+}
+
+public extension AnyValue.DataDecodingStrategy {
+    static let deferredToData = Self { input in
         return try Data(anyValue: input.anyValue)
     }
     
-    public static let base64 = Self { input in
+    static let base64 = Self { input in
         let value = input.anyValue
         if case .bytes(let data) = value { return data }
         guard case .string(let string) = value else {
@@ -37,7 +47,7 @@ extension AnyValue.DataDecodingStrategy {
         return data
     }
     
-    public static let hex = Self { input in
+    static let hex = Self { input in
         let value = input.anyValue
         if case .bytes(let data) = value { return data }
         guard case .string(let string) = value else {
