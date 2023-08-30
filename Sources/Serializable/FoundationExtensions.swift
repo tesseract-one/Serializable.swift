@@ -80,7 +80,6 @@ extension Int32: AnyValueRepresentable {}
 extension Int64: AnyValueRepresentable {}
 extension Float: AnyValueRepresentable {}
 extension Double: AnyValueRepresentable {}
-extension Float80: AnyValueRepresentable {}
 
 extension AnyValue: ExpressibleByIntegerLiteral {
     public typealias IntegerLiteralType = Int64
@@ -206,7 +205,7 @@ extension Array: AnyValueInitializable where Element: AnyValueInitializable {
 }
 
 extension Array where Element: AnyValueConvertible {
-    public func tryParse<E>(parser: @escaping (AnyValue) throws -> E) -> [E]? {
+    public func tryParse<E>(parser: (AnyValue) throws -> E) -> [E]? {
         try? map { try parser($0.anyValue) }
     }
     
@@ -263,7 +262,7 @@ extension Dictionary: AnyValueConvertible where Key == String, Value: AnyValueCo
 }
 
 extension Dictionary where Key == String, Value: AnyValueConvertible {
-    public func tryParse<E>(parser: @escaping (AnyValue) throws -> E) -> [String: E]? {
+    public func tryParse<E>(parser: (AnyValue) throws -> E) -> [String: E]? {
         try? mapValues { try parser($0.anyValue) }
     }
     
